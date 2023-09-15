@@ -1,0 +1,40 @@
+server:
+  port: 8019
+#spring????
+spring:
+  application:
+    name: OrderConsumerApplication
+#dubbo??
+dubbo:
+  application:
+    name: order-consumer
+  protocol:
+    name: dubbo
+    port: 20880
+  registry:
+    id: zk-registry
+    address: zookeeper://127.0.0.1:2181?blockUntilConnectedWait=100000&timeout=100000
+  config-center:
+    address: zookeeper://127.0.0.1:2181
+  metadata-report:
+    address: zookeeper://127.0.0.1:2181
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 1m
+        descriptions: true
+    tags:
+      application: ${spring.application.name}
+  web:
+    server:
+      auto-time-requests: true
+  endpoints:
+    prometheus:
+      id: springmetrics
+    web:
+      exposure:
+        include: health,info,env,prometheus,metrics,httptrace,threaddump,heapdump,springmetrics
+
